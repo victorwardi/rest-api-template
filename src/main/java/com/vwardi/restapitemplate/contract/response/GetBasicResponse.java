@@ -1,4 +1,4 @@
-package com.vwardi.restapitemplate.controller.response;
+package com.vwardi.restapitemplate.contract.response;
 
 import com.vwardi.restapitemplate.model.Basic;
 import io.swagger.annotations.ApiModelProperty;

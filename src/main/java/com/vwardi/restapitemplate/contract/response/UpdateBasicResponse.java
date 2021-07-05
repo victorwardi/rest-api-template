@@ -1,19 +1,25 @@
-package com.vwardi.restapitemplate.controller.response;
+package com.vwardi.restapitemplate.contract.response;
 
-import com.vwardi.restapitemplate.model.Basic;
 import org.springframework.util.Assert;
 
-public class CreateNewBasicResponse {
+import com.vwardi.restapitemplate.model.Basic;
 
+import io.swagger.annotations.ApiModelProperty;
+
+public class UpdateBasicResponse {
+
+    @ApiModelProperty(value = "Basic id")
     private final String id;
+
+    @ApiModelProperty(value = "Basic name")
     private final String name;
 
-    public CreateNewBasicResponse(String id, String name) {
+    public UpdateBasicResponse(String id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    public CreateNewBasicResponse(Basic basic) {
+    public UpdateBasicResponse(Basic basic) {
 
         Assert.notNull(basic, "Basic cannot be null");
         Assert.notNull(basic.getId(), "Basic id cannot be null");

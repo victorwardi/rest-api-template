@@ -4,9 +4,11 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.vwardi.restapitemplate.controller.request.CreateNewBasicRequest;
-import com.vwardi.restapitemplate.controller.response.CreateNewBasicResponse;
-import com.vwardi.restapitemplate.controller.response.GetBasicResponse;
+import com.vwardi.restapitemplate.contract.request.CreateNewBasicRequest;
+import com.vwardi.restapitemplate.contract.request.UpdateBasicRequest;
+import com.vwardi.restapitemplate.contract.response.CreateNewBasicResponse;
+import com.vwardi.restapitemplate.contract.response.GetBasicResponse;
+import com.vwardi.restapitemplate.contract.response.UpdateBasicResponse;
 import com.vwardi.restapitemplate.model.Basic;
 import com.vwardi.restapitemplate.service.BasicService;
 import io.swagger.annotations.Api;
@@ -17,9 +19,11 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.HttpStatus;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -38,7 +42,7 @@ public class BasicController {
 
     @Operation(summary = "Create a new basic")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "204", description = "Basic created", content = {
+        @ApiResponse(responseCode = "201", description = "Basic created", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = CreateNewBasicResponse.class))}),
         @ApiResponse(responseCode = "400", description = "Invalid values", content = @Content)})
     @PostMapping
@@ -47,6 +51,19 @@ public class BasicController {
         Basic newBasic = createNewBasicRequest.toModel();
         Basic savedBasic = this.basicService.save(newBasic);
         return new CreateNewBasicResponse(savedBasic);
+    }
+
+    @Operation(summary = "Update a existing basic")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Basic created", content = {
+            @Content(mediaType = "application/json", schema = @Schema(implementation = CreateNewBasicResponse.class))}),
+        @ApiResponse(responseCode = "400", description = "Invalid values", content = @Content)})
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public UpdateBasicResponse updateBasic(@ApiParam("A valid id") @PathVariable Long id, @Valid @RequestBody UpdateBasicRequest updateBasicRequest) {
+        Basic newBasic = updateBasicRequest.toModel();
+        Basic savedBasic = this.basicService.save(newBasic);
+        return new UpdateBasicResponse(savedBasic);
     }
 
     @Operation(summary = "Get basic by its id")

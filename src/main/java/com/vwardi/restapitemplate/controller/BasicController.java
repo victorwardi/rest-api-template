@@ -53,7 +53,7 @@ public class BasicController {
         return new CreateNewBasicResponse(savedBasic);
     }
 
-    @Operation(summary = "Update a existing basic")
+    @Operation(summary = "Update an existing basic")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Basic created", content = {
             @Content(mediaType = "application/json", schema = @Schema(implementation = CreateNewBasicResponse.class))}),

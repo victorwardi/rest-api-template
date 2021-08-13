@@ -1,34 +1,45 @@
 package com.vwardi.restapitemplate.contract.request;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+import java.util.Objects;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import javax.validation.Valid;
+
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.vwardi.restapitemplate.model.Basic;
-import com.vwardi.restapitemplate.validation.FullName;
+
 import io.swagger.annotations.ApiModel;
 
 @ApiModel(description = "Request object to create a new Basic")
 public class CreateNewBasicRequest {
 
-    @NotBlank
-    @FullName
-    @Size(min = 3, max = 200)
-    private final String name;
+    @Valid
+    @JsonUnwrapped
+    private final FooRequest fooRequest;
 
-    @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
-    public CreateNewBasicRequest(@JsonProperty("name") String name) {
-        this.name = name;
+    public CreateNewBasicRequest (String name, Integer age) {
+        this.fooRequest = new FooRequest(name, age);
+    }
+
+    private CreateNewBasicRequest() {
+        this.fooRequest = null;
     }
 
     public Basic toModel() {
         Basic basic = new Basic();
-        basic.setName(this.name);
+        basic.setName(this.fooRequest.getName());
         return basic;
     }
 
-    public String getName() {
-        return name;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CreateNewBasicRequest that = (CreateNewBasicRequest) o;
+        return Objects.equals(fooRequest, that.fooRequest);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(fooRequest);
     }
 }
